@@ -1,0 +1,71 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply touch-pan-x;
+    overscroll-behavior: none;
+  }
+  
+  body {
+    @apply overflow-hidden;
+  }
+}
+
+@layer components {
+  .game-container {
+    @apply w-full h-screen overflow-hidden relative;
+  }
+
+  .resource-bar {
+    @apply fixed top-4 left-1/2 transform -translate-x-1/2 bg-gray-800 rounded-lg shadow-lg z-50
+           p-2 md:p-4 max-w-[95vw] md:max-w-2xl mx-auto;
+  }
+
+  .resource-grid {
+    @apply grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8;
+  }
+
+  .building-panel {
+    @apply fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-gray-800 rounded-lg shadow-lg z-50
+           p-2 md:p-4 max-w-[95vw] md:max-w-2xl mx-auto;
+  }
+
+  .building-grid {
+    @apply grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4;
+  }
+
+  .building-button {
+    @apply flex flex-col items-center p-2 md:p-3 rounded-lg transition-colors text-center
+           min-w-[80px] md:min-w-[120px];
+  }
+
+  .building-menu {
+    @apply fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2
+           bg-white rounded-lg shadow-xl p-4 w-[90vw] max-w-md z-50;
+  }
+
+  .window-glow {
+    animation: windowGlow 2s ease-in-out infinite alternate;
+  }
+}
+
+@keyframes windowGlow {
+  from {
+    opacity: 0.6;
+    background-color: rgba(147, 197, 253, 0.8);
+  }
+  to {
+    opacity: 0.9;
+    background-color: rgba(191, 219, 254, 1);
+  }
+}
+
+.cursor-grab {
+  cursor: grab;
+}
+
+.cursor-grabbing {
+  cursor: grabbing;
+}
