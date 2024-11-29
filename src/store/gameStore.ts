@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { Building, BuildingType } from '../features/buildings/types';
+import { Building, BuildingType } from '../features/game/types.ts';
 import { Resources } from '../features/resources/types';
 import { buildingService } from '../features/buildings/services/buildingService';
 import { resourceService } from '../features/resources/services/resourceService';
@@ -22,7 +22,7 @@ const INITIAL_RESOURCES: Resources = {
   money: 1000,
   materials: 500,
   energy: 100,
-  tokens: 10,
+  tokens: 2,
 };
 
 export const useGameStore = create<GameState>()(

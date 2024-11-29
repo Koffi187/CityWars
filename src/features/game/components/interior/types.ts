@@ -8,11 +8,14 @@ export interface FurnitureConfig {
   price: number;
   color: string;
   cellSize: number;
+  getDimensions?: (rotation: number) => { width: number; height: number }; // Gestion de la rotation
 }
 
-export interface FurnitureItem {
+export interface InventoryItem {
   id: string;
   type: string;
   position: { x: number; y: number };
-  color?: string;
+  rotation?: number; // Rotation facultative
+  color?: string; // Facultatif si absent
+  name: string; // Si cette propriété est requise dans d'autres parties du code
 }

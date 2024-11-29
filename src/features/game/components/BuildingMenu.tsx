@@ -16,8 +16,7 @@ export function BuildingMenu({ building, onClose }: BuildingMenuProps) {
   const menuRef = useRef<HTMLDivElement>(null);
   const { deleteBuilding, updateBuilding, resources, updateResources } = useGameStore();
 
-  // Coût d'amélioration en jetons
-  const UPGRADE_COST = 2;
+  const UPGRADE_COST = 2; // Coût d'amélioration en jetons
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -31,9 +30,7 @@ export function BuildingMenu({ building, onClose }: BuildingMenuProps) {
   }, [onClose]);
 
   const handleNameChange = (newName: string) => {
-    if (newName.length <= 20) {
-      setName(newName);
-    }
+    if (newName.length <= 20) setName(newName);
   };
 
   const handleSaveName = () => {
@@ -47,7 +44,7 @@ export function BuildingMenu({ building, onClose }: BuildingMenuProps) {
     if (resources.tokens >= UPGRADE_COST) {
       await updateResources({ tokens: resources.tokens - UPGRADE_COST });
       await updateBuilding(building.id, { 
-        scale: Math.min((building.scale || 1) + 0.2, 2.0) // Maximum scale de 2.0
+        scale: Math.min((building.scale || 1) + 0.2, 2.0) // Limite la taille maximale à 2.0
       });
     }
   };
@@ -65,36 +62,36 @@ export function BuildingMenu({ building, onClose }: BuildingMenuProps) {
   };
 
   return (
-    <div 
+    <div
       ref={menuRef}
-      className="absolute z-50 -top-4 left-1/2 transform -translate-x-1/2 -translate-y-full bg-white rounded-lg shadow-xl p-4 min-w-[300px] max-w-md"
+      className="absolute z-50 -top-4 left-1/2 transform -translate-x-1/2 -translate-y-full bg-gray-800 text-white rounded-lg shadow-2xl p-5 w-[90%] sm:min-w-[300px] sm:max-w-md lg:w-[400px] transition-all"
       onClick={(e) => e.stopPropagation()}
     >
+      {/* Bouton de fermeture */}
       <button
         onClick={onClose}
-        className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
+        className="absolute top-3 right-3 text-gray-400 hover:text-gray-200 transition-colors"
       >
         <X className="w-5 h-5" />
       </button>
 
-      <div className="space-y-4">
+      <div className="space-y-5">
         {/* Nom du bâtiment */}
-        <div className="flex items-center gap-2">
+        <div className="flex flex-col sm:flex-row items-center gap-2">
           {isEditing ? (
             <div className="flex-1">
               <input
                 type="text"
                 value={name}
                 onChange={(e) => handleNameChange(e.target.value)}
-                className="w-full px-2 py-1 border rounded"
+                className="w-full px-3 py-2 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                 maxLength={20}
                 autoFocus
-                onClick={(e) => e.stopPropagation()}
               />
-              <div className="flex gap-2 mt-2">
+              <div className="flex gap-2 mt-3">
                 <button
                   onClick={handleSaveName}
-                  className="px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+                  className="px-4 py-2 bg-blue-500 rounded-md hover:bg-blue-600 transition-colors"
                 >
                   Sauvegarder
                 </button>
@@ -103,7 +100,7 @@ export function BuildingMenu({ building, onClose }: BuildingMenuProps) {
                     setIsEditing(false);
                     setName(building.name || BUILDING_CONFIGS[building.type].name);
                   }}
-                  className="px-3 py-1 bg-gray-200 rounded-md hover:bg-gray-300"
+                  className="px-4 py-2 bg-gray-600 rounded-md hover:bg-gray-500 transition-colors"
                 >
                   Annuler
                 </button>
@@ -111,10 +108,10 @@ export function BuildingMenu({ building, onClose }: BuildingMenuProps) {
             </div>
           ) : (
             <>
-              <h3 className="text-lg font-semibold flex-1">{name}</h3>
+              <h3 className="text-lg font-bold flex-1 text-center sm:text-left">{name}</h3>
               <button
                 onClick={() => setIsEditing(true)}
-                className="p-1 hover:bg-gray-100 rounded"
+                className="p-2 hover:bg-gray-700 rounded-md transition"
               >
                 <Edit2 className="w-4 h-4" />
               </button>
@@ -124,7 +121,7 @@ export function BuildingMenu({ building, onClose }: BuildingMenuProps) {
 
         {/* Couleur personnalisée */}
         <div>
-          <h4 className="text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+          <h4 className="text-sm font-medium flex items-center gap-2">
             <Paintbrush className="w-4 h-4" />
             Couleur personnalisée
           </h4>
@@ -138,26 +135,26 @@ export function BuildingMenu({ building, onClose }: BuildingMenuProps) {
 
         {/* Amélioration */}
         <div>
-          <h4 className="text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+          <h4 className="text-sm font-medium flex items-center gap-2">
             <ChevronUp className="w-4 h-4" />
             Amélioration
           </h4>
-          <div className="bg-gray-50 p-3 rounded-lg mb-2">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-sm text-gray-600">Coût:</span>
+          <div className="bg-gray-700 p-4 rounded-lg shadow-inner">
+            <div className="flex justify-between items-center mb-3">
+              <span className="text-sm text-gray-300">Coût:</span>
               <div className="flex items-center gap-1">
                 <Gem className="w-4 h-4 text-yellow-500" />
-                <span className="font-medium">{UPGRADE_COST} jetons</span>
+                <span className="font-bold">{UPGRADE_COST} jetons</span>
               </div>
             </div>
-            <div className="text-sm text-gray-500">
+            <div className="text-sm text-gray-400">
               Taille actuelle: {Math.round((building.scale || 1) * 100)}%
             </div>
           </div>
           <button
             onClick={handleUpgrade}
             disabled={resources.tokens < UPGRADE_COST || (building.scale || 1) >= 2.0}
-            className="w-full px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            className="w-full mt-3 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 disabled:opacity-50 disabled:cursor-not-allowed transition flex items-center justify-center gap-2"
           >
             <ChevronUp className="w-4 h-4" />
             {(building.scale || 1) >= 2.0 
@@ -171,7 +168,7 @@ export function BuildingMenu({ building, onClose }: BuildingMenuProps) {
         {/* Suppression */}
         <button
           onClick={handleDelete}
-          className="w-full px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors flex items-center justify-center gap-2"
+          className="w-full px-4 py-2 bg-red-500 rounded-md hover:bg-red-600 transition flex items-center justify-center gap-2"
         >
           <Trash2 className="w-4 h-4" />
           Détruire le bâtiment

@@ -5,38 +5,41 @@ import { BuildingMenu } from './BuildingMenu';
 import { BuildingInterior } from './BuildingInterior';
 import { DoorOpen } from 'lucide-react';
 
-export function Building({ building }: { building: BuildingType }) {
-  const [showMenu, setShowMenu] = useState(false);
-  const [showInterior, setShowInterior] = useState(false);
+interface BuildingProps {
+  building: BuildingType;
+  setShowInterior: React.Dispatch<React.SetStateAction<string | null>>; // Permet de gérer l'ouverture de l'intérieur du bâtiment
+  showInterior: string | null;  // Vérifie si ce bâtiment est ouvert
+}
+
+export function Building({ building, setShowInterior, showInterior }: BuildingProps) {
+  const [showMenu, setShowMenu] = useState(false); // Menu pour la gestion du bâtiment
   const config = BUILDING_CONFIGS[building.type];
 
+  // Fonction pour afficher/masquer le menu
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (!showInterior) {
-      setShowMenu(!showMenu);
-    }
+    setShowMenu(!showMenu);
   };
 
+  // Fonction pour afficher l'intérieur du bâtiment
   const handleInteriorClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (building.type === 'residential') {
-      setShowInterior(true);
+      setShowInterior(building.id); // Ouvrir l'intérieur en utilisant l'ID du bâtiment
       setShowMenu(false);
     }
   };
 
   return (
     <>
+      {/* Bâtiment principal */}
       <div
-        className="absolute transition-all duration-500 ease-out cursor-pointer"
+        className={`absolute cursor-pointer ${showInterior === building.id ? 'pointer-events-none opacity-20' : ''}`}
         style={{
           left: `${building.x}px`,
           top: `${building.y}px`,
           width: `${config.dimensions.width}px`,
           height: `${config.dimensions.height}px`,
-          transform: `scale(${building.scale || 1})`,
-          transformOrigin: 'center bottom',
-          zIndex: building.y,
         }}
         onClick={handleClick}
       >
@@ -59,7 +62,7 @@ export function Building({ building }: { building: BuildingType }) {
               />
             ))}
           </div>
-          
+
           {/* Porte */}
           <div 
             className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1/4 h-1/6 bg-gray-800 rounded-t-lg cursor-pointer hover:bg-gray-700 transition-colors"
@@ -83,6 +86,7 @@ export function Building({ building }: { building: BuildingType }) {
           </span>
         </div>
 
+        {/* Affichage du menu */}
         {showMenu && (
           <BuildingMenu
             building={building}
@@ -91,10 +95,11 @@ export function Building({ building }: { building: BuildingType }) {
         )}
       </div>
 
-      {showInterior && (
+      {/* Affichage de l'intérieur */}
+      {showInterior === building.id && (
         <BuildingInterior
           building={building}
-          onClose={() => setShowInterior(false)}
+          onClose={() => setShowInterior(null)} // Fermer l'intérieur quand on clique en dehors
         />
       )}
     </>

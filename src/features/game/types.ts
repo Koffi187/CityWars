@@ -15,7 +15,9 @@ export interface Building {
     id: string;
     type: string;
     position: { x: number; y: number };
-    rotation?: number;
+    rotation?: number; // Rotation facultative
+    color?: string; // Facultatif si absent
+    name: string; // Si cette propriété est requise dans d'autres parties du code
   }[];
 }
 
