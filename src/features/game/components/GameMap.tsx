@@ -1,6 +1,6 @@
 import { useCallback, useRef, useState } from 'react';
 import { useGameStore } from '../../../store/gameStore';
-import { Building } from './Building';
+import { Building as BuildingComponent } from './Building';
 import { BUILDING_CONFIGS } from '../configs/buildingConfigs';
 import { auth } from '../../auth/firebase';
 
@@ -61,8 +61,8 @@ export function GameMap() {
             x: newX,
             y,
             scale: 1,
-            createdAt: Date.now(),
-            ownerId: auth.currentUser.uid,
+            color: config.color || '#ffffff',  // Ajouter une couleur par défaut si absente
+            name: '',  // Vous pouvez ajouter un nom par défaut ou laisser vide
           });
         } catch (error) {
           console.error('Erreur lors de la construction:', error);
@@ -118,11 +118,11 @@ export function GameMap() {
 
         {/* Bâtiments */}
         {buildings.map((building) => (
-          <Building
+          <BuildingComponent
             key={building.id}
             building={building}
-            setShowInterior={setShowInterior} // Passer `setShowInterior` pour ouvrir l'intérieur
-            showInterior={showInterior} // Passer l'état de l'intérieur pour savoir si ce bâtiment est ouvert
+            setShowInterior={setShowInterior}
+            showInterior={showInterior}
           />
         ))}
       </div>

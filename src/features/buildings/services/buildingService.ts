@@ -1,6 +1,6 @@
 import { collection, addDoc, query, where, onSnapshot, deleteDoc, doc, serverTimestamp, updateDoc } from 'firebase/firestore';
 import { db, auth } from '../../auth/firebase';
-import { Building } from '../types';
+import { Building } from '../../game/types.ts';
 import { useGameStore } from '../../../store/gameStore';
 
 const BUILDINGS_COLLECTION = 'buildings';
